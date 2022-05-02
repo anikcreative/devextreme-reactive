@@ -10,6 +10,7 @@ import { getStickyStyles } from './utils';
 const PREFIX = 'TableParts';
 export const classes = {
   fixedHeader: `${PREFIX}-fixedHeader`,
+  fixedBody: `${PREFIX}-fixedBody`,
   fixedFooter: `${PREFIX}-fixedFooter`,
 };
 
@@ -17,6 +18,13 @@ const StyledHead = styled(TableHead)(({ theme }) => ({
   [`&.${classes.fixedHeader}`]: {
     ...getStickyStyles(theme, 500),
     top: 0,
+  },
+}));
+
+const StyledBody = styled(TableBody)(() => ({
+  [`&.${classes.fixedBody}`]: {
+    position: 'relative',
+    zIndex: 0,
   },
 }));
 
@@ -46,7 +54,15 @@ Head.defaultProps = {
   className: undefined,
 };
 
-export const Body = ({ isFixed, ...props }) => <TableBody {...props} />;
+export const Body = ({
+  isFixed, className, ...restProps
+}) => (
+  <StyledBody
+    className={classNames({ [classes.fixedBody]: isFixed }, className)}
+    {...restProps}
+  />
+);
+
 Body.propTypes = {
   isFixed: PropTypes.bool,
 };
